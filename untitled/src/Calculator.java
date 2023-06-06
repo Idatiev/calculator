@@ -3,41 +3,49 @@ import java.util.Scanner;
 public class Calculator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите выражение в формате 'число операция число' от 1 до 10 включительно: ");
+        String input = scanner.nextLine();
 
-        System.out.print("Введите первое число: ");
-        double num1 = scanner.nextDouble();
 
-        System.out.print("Введите второе число: ");
-        double num2 = scanner.nextDouble();
+        String[] parts = input.split(" ");
+        if (parts.length != 3) {
+            System.out.println("Ошибка: некорректный формат выражения.");
+            return;
+        }
 
-        System.out.print("Выберите операцию (+, -, *, /): ");
-        char operator = scanner.next().charAt(0);
 
-        double result;
+        int number1, number2;
+        try {
+            number1 = Integer.parseInt(parts[0]);
+            number2 = Integer.parseInt(parts[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("Ошибка: некорректное числовое значение.");
+            return;
+        }
 
-        switch (operator) {
-            case '+':
-                result = num1 + num2;
-                System.out.println("Результат: " + result);
-                break;
-            case '-':
-                result = num1 - num2;
-                System.out.println("Результат: " + result);
-                break;
-            case '*':
-                result = num1 * num2;
-                System.out.println("Результат: " + result);
-                break;
-            case '/':
-                if (num2 != 0) {
-                    result = num1 / num2;
-                    System.out.println("Результат: " + result);
-                } else {
-                    System.out.println("Ошибка: деление на ноль");
+
+        int result;
+        if (number1 > 10 || number2 > 10) {
+            System.out.println("Введенное число больше 10");
+        } else {
+            switch (parts[1]) {
+                case "+" -> result = number1 + number2;
+                case "-" -> result = number1 - number2;
+                case "*" -> result = number1 * number2;
+                case "/" -> {
+                    if (number2 == 0) {
+                        System.out.println("Ошибка: деление на ноль.");
+                        return;
+                    }
+                    result = number1 / number2;
                 }
-                break;
-            default:
-                System.out.println("Ошибка: неверная операция");
+                default -> {
+                    System.out.println("Ошибка: некорректная операция.");
+                    return;
+                }
+            }
+
+            System.out.println("Результат: " + result);
         }
     }
 }
